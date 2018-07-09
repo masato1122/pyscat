@@ -1,0 +1,44 @@
+convert: no images defined `/home/ohnishi/fig_temp.png' @ error/convert.c/ConvertImageCommand/3254.
+/home/ohnishi/fig_temp.png
+Core 0:         +45.0 C  (high = +90.0 C, crit = +100.0 C)
+Core 0:         +43.0 C  (high = +90.0 C, crit = +100.0 C)
+/home/ohnishi/work/Impurity/phtmat/phtmat/calc/tips.py:337: RuntimeWarning: invalid value encountered in true_divide
+  (- f2_target + f2s_integral[i2])
+
+ -------------------------------------------------------------
+ phtmat : Calculator of phonon lifetime due to an impurity
+ -------------------------------------------------------------
+
+ Cell size check is OFF.
+ Given structures are compatible.
+ Force constants are set.
+
+ q-mesh : 2 x 2 x 2
+ # of irreducible q-points : 2
+
+
+  0-th q-point :   0.25   0.25   0.25
+  0   2.89 THz :        nan
+  1   2.89 THz : -1.150e-04
+  2   4.67 THz :  1.362e-04
+  3   6.96 THz :  2.803e-01
+  4   7.11 THz :  2.895e-04
+  5   7.11 THz : -2.533e-04
+  6   8.30 THz :  9.814e-05
+  7   8.30 THz :  2.959e-04
+  8   9.40 THz :  3.274e-05
+
+  1-th q-point :  -0.25   0.25   0.25
+  0   4.04 THz :  2.731e-04
+  1   4.22 THz : -1.620e-05
+  2   5.24 THz :  8.037e-02
+  3   5.92 THz :  3.308e-07
+  4   6.16 THz :  6.767e-02
+  5   7.11 THz : -2.039e-03
+  6   7.96 THz :  6.189e-05
+  7   8.43 THz : -8.245e-06
+  8   9.49 THz :        nan
+
+ All done!
+----------------------------------------
+

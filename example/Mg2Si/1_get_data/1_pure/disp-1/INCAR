@@ -1,0 +1,11 @@
+  PREC = Accurate
+IBRION = -1
+ ENCUT = 270
+ EDIFF = 1.0e-08
+ISMEAR = 0; SIGMA = 0.01
+ IALGO = 38
+ LREAL = .FALSE.
+ LWAVE = .FALSE.
+LCHARG = .FALSE.
+KPAR = 3
+NPAR = 4

@@ -1,0 +1,14 @@
+# ------------------------------------------
+# Phonon scattering rate due to an impurity
+# calculated by phtmat
+# ------------------------------------------
+#
+# Units
+# frequency, scattering rate [THz]
+#
+# q-mesh : 5 5 5 
+# irreducible q-points : 10
+#
+#  0 qpoint : 0.0000000e+00 0.0000000e+00 0.0000000e+00 
+ 0        -0.000        0.00000e+00
+ 1         0.000        0.00000e+00

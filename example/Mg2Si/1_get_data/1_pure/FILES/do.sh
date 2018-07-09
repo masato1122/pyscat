@@ -1,0 +1,2 @@
+cat POTCAR.Si POTCAR.Mg > POTCAR
+
