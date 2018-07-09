@@ -452,7 +452,7 @@ def get_UTU_braket(
     
     return rscat[0,0]
 
-def conv_tmat_L2s(LTmat, masses, n2s):
+def conv_tmat_L2s(LTmat, masses):
     """Conversion from t-matrix to T-matrix
     Note
     ------
@@ -469,19 +469,22 @@ def conv_tmat_L2s(LTmat, masses, n2s):
     nat : integer
         # of atoms
     """
-    
-    #------------- HEREEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!!!!!!!!!1
-    print(np.shape(LTmat), np.shape(masses), len(n2s))
-    
-    exit()
+    nmat = len(LTmat)
+    nat = len(masses)
+    if nmat != 3*nat:
+        print("Error. matrix shape is incompatible.")
+        print(nmat, "!=", nat*3)
+        import sys
+        sys.exit()
     stmat = np.zeros_like(LTmat, dtype=np.complex)
-    nat = int(len(masses) / 3)
-    for i1 in range(nat):
-        for j in range(3):
-            stmat[3*i1:3*(i1+1)] = LTmat[3*i1:3*(i1+1)] / masses[i1]
+    mlong = np.zeros(nmat)
+    for iat in range(nat):
+        mlong[3*iat:3*(iat+1)] = masses[iat] * np.ones(3)
+    for iat in range(nat):
+        stmat[3*iat:3*(iat+1)] = LTmat[3*iat:3*(iat+1)] / mlong
     return stmat
 
-def get_dos_imp(stmat, g0):
+def get_dos_imp(stmat, g0, n2ss):
     """Calculator of DOS of structures with an impurity
     Parameters
     ----------
@@ -490,7 +493,41 @@ def get_dos_imp(stmat, g0):
     g0 : complex, shape=(3*nat, 3*nat)
         Green's function of pure crystal
     """
-    g1 = np.dot((np.eye(len(stmat)) + np.dot(g0, stmat)), g0)
-    dos = np.imag(np.trace(g1)) / np.pi
-    return dos
+    nat = len(n2ss)
+    multi = conv_n2ss2weights(n2ss)
+    mul_long = np.zeros(3*nat)
+    for i in range(nat):
+        mul_long[3*i:3*(i+1)] = multi[i] * np.ones(3)
     
+    # -- calculate Green's function of impurity system
+    g1 = np.dot((np.eye(len(stmat)) + np.dot(g0, stmat)), g0)
+     
+    dos = np.imag(np.trace(g1 / mul_long)) / np.pi
+    return dos
+
+def conv_n2ss2weights(n2ss):
+    """Get # of equivalent atoms
+    Definitions
+    ------------
+    new cell : cell made for the calculation of T-matrix
+    supercell : cell used for the calculation of IFCs
+
+    Parameters
+    ----------
+    n2ss : array, integer, shape=(natom,)
+        atomic indices of supercell corresponding to the new cell
+    natom : integer
+        # of atoms
+
+    Return
+    --------
+    multi : array, float (but integer), shape=(natom,)
+        # of equivalent atoms for each atom in the new cell
+    """
+    multi = np.zeros_like(n2ss)
+    for i1 in range(len(n2ss)):
+        for i2 in range(len(n2ss)):
+            if n2ss[i2] == n2ss[i1]:
+                multi[i1] += 1.
+    return multi
+

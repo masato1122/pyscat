@@ -45,9 +45,9 @@ def main():
     
     ndiv_integral = 200
     
-    green = Green( mesh, ndiv=ndiv_integral, 
-                   fposcar=POS_PURE, primat=primat, ncells=nc_scell,
-                   fforce=FORCE_PURE, fborn="BORN" )
+    green = Green(mesh, ndiv=ndiv_integral, 
+            fposcar=POS_PURE, primat=primat, ncells=nc_scell,
+            fforce=FORCE_PURE, fborn="BORN")
     green.set_qmesh()
     
     Nfreq = 100

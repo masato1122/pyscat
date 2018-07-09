@@ -1,2 +1,2 @@
 # phtmat
-Simulator of phonon life time due to impurities with T-matrix
+Calculator of phonon scattering rate due to an impurity with T-matrix

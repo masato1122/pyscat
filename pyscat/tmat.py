@@ -130,9 +130,10 @@ class Tmat(object):
         # variables that will be used
         # -----------------------------------
         self.f2_target = None
+        self.g0 = None
         
         self._flag_structure = None
-        self._flag_calc = None
+        self.flag_calc = None
         
         # ----------------------------------------------------
         # new cell around an impurity in which the impurity
@@ -314,11 +315,11 @@ class Tmat(object):
         """
         self.f2_target = get_frequency2(frequency=frequency, f2=f2)
         if np.sqrt(abs(self.f2_target)) < feta:
-            self._flag_calc = False
+            self.flag_calc = False
             return False
         else:
-            self._flag_calc = True
-
+            self.flag_calc = True
+        
         # -- get tetrahedron meshes for the both system
         ph_pure = self.ph_pure
         mesh    = self.idat_pure.nmesh
@@ -339,13 +340,12 @@ class Tmat(object):
                 pc.cell, self.nc_pure.cell,
                 self.nc_pure.scaled_positions,
                 n2pp, ndiv_integral = ndiv)
-        
         #print(" Green's function is calculated.")
     
     def set_Tmatrix(self):
         """Calculator of T-matrix
         """
-        if self._flag_calc is not True:
+        if self.flag_calc is not True:
             return None
         dphi = self._get_dphi()
         Imat = np.eye(len(self.g0))
@@ -367,6 +367,8 @@ class Tmat(object):
             frequencies
         evecs : ndarray, complex, shape=(nq, 3*nsites, nmodes)
             eigenvectors
+        dos_imp : ndarray, float, shape=(nq, nmodes)
+            DOS of the system with an impurity
         nq, nsites, and nmodes : integer
             # of q-points, sites, and modes.
             nmodes == 3*nsites
@@ -375,11 +377,14 @@ class Tmat(object):
         nq = len(qs)
         nmodes = len(f2s)
         rscat = np.zeros_like((f2s), dtype=float)
+        dos_imp = np.zeros_like((f2s), dtype=float)
         ddump = np.zeros_like((f2s), dtype=np.complex)
+        
         for iq, qpoint in enumerate(qs):
             for im, f2 in enumerate(f2s[iq]):
                 self.set_green_pure(f2=f2, ndiv_integral=ndiv_integral)
                 self.set_Tmatrix()
+                dos_imp[iq,im] = self.get_dos_tmat()
                 rscat[iq,im], ddump[iq,im] = (
                         self.get_scattering_rate(
                             qpoint=qpoint,
@@ -393,7 +398,7 @@ class Tmat(object):
         #output_scattering_rates(qs, f2s, rscat)
         
         frequencies = np.sqrt(abs(f2s)) * np.sign(f2s)
-        return qs, frequencies, rscat
+        return qs, frequencies, rscat, dos_tmat
 
     def get_grid4summation(self):
         """Get phonon properteis on grid
@@ -433,7 +438,7 @@ class Tmat(object):
         rscat : float
             Scattering rate
         """
-        if self._flag_calc is not True:
+        if self.flag_calc is not True:
             rscat = 0.0
             _print_rscat(iq, qpoint, imode, f2, rscat)
             return rscat, None
@@ -485,14 +490,12 @@ class Tmat(object):
     def get_dos_tmat(self):
         """Calculator of DOS with T-matrix
         """
-        if self._flag_calc is not True:
+        if self.flag_calc is not True:
             dos = 0.0
             return dos
-        
-        # HEREEEEEEEEEEEEEEEEEEEEEE!!!!!!!!!!1
-        
-        stmat = conv_tmat_L2s(self.tmat, self.nc_imp.masses, self.nc_imp.n2s_map)
-        dos = get_dos_imp(stmat, self.g0)
+        stmat = conv_tmat_L2s(self.tmat, self.nc_imp.masses)
+        n2pp = _get_IDmap4newcell(self.ph_imp.get_primitive(), self.nc_imp)
+        dos = get_dos_imp(stmat, self.g0, n2pp)
         return dos
 
 def _initialize_pyscat():
