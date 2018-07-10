@@ -4,6 +4,8 @@ from phonopy import Phonopy
 from pyscat.green import Green
 from pyscat.calc.dos import cal_dos_f2
 
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 # --------------------------------
@@ -37,7 +39,9 @@ def draw(f1, d1, f2, d2):
     ax1.plot(f2, d2, '.', c='orange', label="G_0")
     ax1.legend()
     #plt.show()
-    plt.savefig("NaCl_dos.png")
+    FNAME = "dos_pure.png"
+    plt.savefig(FNAME)
+    print("Output", FNAME)
 
 def main():
     
@@ -50,7 +54,7 @@ def main():
             fforce=FORCE_PURE, fborn="BORN")
     green.set_qmesh()
     
-    Nfreq = 100
+    Nfreq = 10
     frequencies = np.linspace(0., 7., Nfreq)
     dos_green = np.zeros_like(frequencies)
     for i in range(Nfreq):

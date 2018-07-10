@@ -500,10 +500,11 @@ def get_dos_imp(stmat, g0, n2ss):
         mul_long[3*i:3*(i+1)] = multi[i] * np.ones(3)
     
     # -- calculate Green's function of impurity system
-    g1 = np.dot((np.eye(len(stmat)) + np.dot(g0, stmat)), g0)
-     
-    dos = np.imag(np.trace(g1 / mul_long)) / np.pi
-    return dos
+    g1 = np.dot(np.eye(len(stmat)) + np.dot(g0, stmat), g0)
+    
+    dos_imp = np.imag(np.trace(g1)) / np.pi
+    #dos_imp = np.imag(np.trace(g1 / mul_long)) / np.pi
+    return dos_imp
 
 def conv_n2ss2weights(n2ss):
     """Get # of equivalent atoms

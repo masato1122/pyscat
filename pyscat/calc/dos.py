@@ -69,3 +69,4 @@ def get_dos_green(g0, nat_prim):
     """
     return np.sum(np.diag(np.imag(g0))) * 3. * float(nat_prim) / np.pi
     #===== (3*nat_prim) is to be check
+

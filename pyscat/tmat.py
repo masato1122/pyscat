@@ -32,8 +32,7 @@ def _check_input_parameter(para, label):
         import sys
         sys.exit()
 
-"""
-  
+"""  
 """
 class Tmat(object):
     def __init__(self,

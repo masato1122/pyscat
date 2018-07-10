@@ -2,7 +2,7 @@
 #PBS -q default
 #PBS -l nodes=1:ppn=2:cnode012
 #PBS -j oe
-#PBS -N test
+#PBS -N 555
 
 export OMP_NUM_THREADS=1
 cd $PBS_O_WORKDIR

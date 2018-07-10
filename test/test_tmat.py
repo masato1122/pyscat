@@ -4,8 +4,9 @@ from pyscat.crystal.crys import Grid
 from pyscat.crystal.vesta import mkvesta_IFCs
 from pyscat.latdynam.phonon import get_grid
 from pyscat.calc.dos import get_dos_green
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
 
 # --------------------------------
 # input parameters
@@ -23,7 +24,10 @@ def draw(freqs, d1, d2):
     plt.plot(freqs, d2, '.', c='orange', label="DOS(imp)")
     plt.legend()
     #plt.show()
-    plt.savefig("dos_imp.png")
+    
+    FNAME = "dos_imp.png"
+    plt.savefig(FNAME)
+    print("Output:", FNAME)
 
 
 def main():
