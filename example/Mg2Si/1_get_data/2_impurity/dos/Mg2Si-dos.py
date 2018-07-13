@@ -17,12 +17,12 @@ def get_phonon(mesh):
     unitcell = read_vasp("POSCAR")
     
     phonon = Phonopy(unitcell,
-                     [[2, 0, 0],
-                      [0, 2, 0],
-                      [0, 0, 2]],
-                     primitive_matrix=[[0., 0.5, 0.5],
-                                       [0.5, 0., 0.5],
-                                       [0.5, 0.5, 0.]])
+                     [[1, 0, 0],
+                      [0, 1, 0],
+                      [0, 0, 1]],
+                     primitive_matrix=[[1., 0., 0.],
+                                       [0., 1., 0.],
+                                       [0., 0., 1.]])
     
     force_sets = parse_FORCE_SETS()      #--- read "FORCE_SETS"
     
@@ -91,13 +91,8 @@ def draw(f, d):
     #plt.show()
     plt.savefig("dos.png")
 
-def output(OFILE, f, d, mesh):
+def output(OFILE, f, d):
     ofs = open(OFILE, "w")
-    ofs.write("# mesh ")
-    for j in range(3):
-        ofs.write("{:d} ".format(mesh[j]))
-    ofs.write("\n")
-    ofs.write("#freq[THz]  DOS[au]\n")
     for i in range(len(f)):
         ofs.write("{:10.5f} {:15.7e}\n".format(f[i], d[i]))
     ofs.close()
@@ -108,8 +103,7 @@ def main():
     #mesh = [5, 5, 5]
     frequency_points, dos = get_dos(mesh)
     draw(frequency_points, dos)
-    OFILE = "dos_{:d}{:d}{:d}.txt".format(mesh[0], mesh[1], mesh[2])
-    output(OFILE, frequency_points, dos, mesh)
+    output("dos.txt", frequency_points, dos)
 
 if __name__ == "__main__":
     main()

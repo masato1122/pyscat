@@ -14,6 +14,8 @@ import matplotlib.pyplot as plt
 # --------------------------------
 # input parameters
 # --------------------------------
+mesh = [5, 5, 5]
+
 nc_scell = [[1,0,0], [0,1,0], [0,0,1]]
 primat = [[0, 0.25, 0.25], [0.25, 0, 0.25], [0.25, 0.25, 0]]
 
@@ -34,10 +36,10 @@ def draw_rscat(freqs, rscat):
     print("Output", FNAME)
     #plt.show()
 
-def draw_dos(freqs, dos1, dos2):
+def draw_dos(freqs, dos1):
     fig, ax1 = plt.subplots()
     ax1.plot(freqs, dos1, '-', label="pure")
-    ax1.plot(freqs, dos2, '.', label="impurity")
+    #ax1.plot(freqs, dos2, '.', label="impurity")
     ax1.legend()
     plt.xlabel("Frequency (THz)")
     plt.ylabel("DOS (a.u.)")
@@ -45,20 +47,18 @@ def draw_dos(freqs, dos1, dos2):
     plt.savefig(FNAME)
     print("Output", FNAME)
 
-def output_dos(OFILE, f, d1, d2):
+def output_dos(OFILE, f, d1):
     ofs = open(OFILE, "w")
     ofs.write("#freq[THz]  DOS(pure) DOS(imp)\n")
     for i in range(len(f)):
-        ofs.write("{:13.7f} {:15.7e} {:15.7e}\n".format(
-            f[i], d1[i], d2[i]))
+        ofs.write("{:13.7f} {:15.7e}\n".format(
+            f[i], d1[i]))
     ofs.close()
     print("Output", OFILE)
 
 
 def main(f1, f2):
-    
-    mesh = [5, 5, 5]
-    
+     
     ndiv_integral = 200
      
     tmat = Tmat( 
@@ -129,27 +129,30 @@ def main(f1, f2):
     #                )
     # 
     
-
     #--- calculate DOS
-    Nfreq = 100
+    Nfreq = 10
     frequencies = np.linspace(0, 11., Nfreq)
     dos_green = np.zeros_like(frequencies)
     dos_tmat = np.zeros_like(frequencies)
     for i, freq in enumerate(frequencies):
         tmat.set_green_pure(frequency=freq, ndiv_integral=200)
         if tmat.flag_calc:
-            dos_green[i] = get_dos_green(tmat.g0, len(tmat.ph_pure.get_primitive().masses))
+            dos_green[i] = get_dos_green(
+                    tmat.g0, len(tmat.ph_pure.get_primitive().masses))
         else:
             dos_green[i] = 0.0
 
-        tmat.set_Tmatrix()
-        dos_tmat[i] = tmat.get_dos_tmat()
-        print("{:10.4f} {:15.10f} {:15.10f}".format(freq, dos_green[i], dos_tmat[i]))
+        print("{:10.4f} {:15.10f} ".format(freq, dos_green[i]))
+        
+        #tmat.set_Tmatrix()
+        #dos_tmat[i] = tmat.get_dos_tmat()
+        #print("{:10.4f} {:15.10f} {:15.10f}".format(
+        #    freq, dos_green[i], dos_tmat[i]))
     
     nat_prim = len(tmat.ph_pure.get_primitive().masses)
     dos_green /= float(3 * nat_prim)
-    draw_dos(frequencies, dos_green, dos_tmat)
-    output_dos("dos.txt", frequencies, dos_green, dos_tmat)
+    draw_dos(frequencies, dos_green)
+    output_dos("dos.txt", frequencies, dos_green)
     
     #draw_rscat(freqs, rscat)
     

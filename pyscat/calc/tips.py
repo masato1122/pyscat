@@ -492,6 +492,8 @@ def get_dos_imp(stmat, g0, n2ss):
         t-matrix, t = (1 - dv * g0)^-1
     g0 : complex, shape=(3*nat, 3*nat)
         Green's function of pure crystal
+    n2ss : array, integer, shape=(natom,)
+        atomic indices of supercell corresponding to the new cell
     """
     nat = len(n2ss)
     multi = conv_n2ss2weights(n2ss)
@@ -502,8 +504,10 @@ def get_dos_imp(stmat, g0, n2ss):
     # -- calculate Green's function of impurity system
     g1 = np.dot(np.eye(len(stmat)) + np.dot(g0, stmat), g0)
     
+    # ====== HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE =======================
     dos_imp = np.imag(np.trace(g1)) / np.pi
     #dos_imp = np.imag(np.trace(g1 / mul_long)) / np.pi
+    
     return dos_imp
 
 def conv_n2ss2weights(n2ss):

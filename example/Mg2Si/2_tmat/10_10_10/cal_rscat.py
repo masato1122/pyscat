@@ -14,6 +14,8 @@ import matplotlib.pyplot as plt
 # --------------------------------
 # input parameters
 # --------------------------------
+mesh = [10, 10, 10]
+
 nc_scell = [[1,0,0], [0,1,0], [0,0,1]]
 primat = [[0, 0.25, 0.25], [0.25, 0, 0.25], [0.25, 0.25, 0]]
 
@@ -56,8 +58,6 @@ def output_dos(OFILE, f, d1, d2):
 
 
 def main(f1, f2):
-    
-    mesh = [5, 5, 5]
     
     ndiv_integral = 200
      
