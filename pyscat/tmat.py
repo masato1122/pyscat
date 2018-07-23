@@ -20,7 +20,8 @@ from pyscat.utils.comp import (
         check_cells, check_number_of_atoms, check_positions)
 from pyscat.calc.tips import (
         cal_green_function, get_dphi, get_UTU_braket,
-        conv_tmat_L2s, get_dos_imp)
+        conv_tmat_L2s, get_dos_imp, conv_n2ss2weights)
+from pyscat.calc.dos import get_dos_green
 from pyscat.utils.files import (
         initialize_scattering_file,
         dump_scattering_rate,
@@ -493,10 +494,24 @@ class Tmat(object):
             dos = 0.0
             return dos
         stmat = conv_tmat_L2s(self.tmat, self.nc_imp.masses)
-        n2pp = _get_IDmap4newcell(self.ph_imp.get_primitive(), self.nc_imp)
-        dos = get_dos_imp(stmat, self.g0, n2pp)
+        n2ss = _get_IDmap4newcell(self.ph_imp.get_primitive(), self.nc_imp)
+        multi = conv_n2ss2weights(n2ss)
+        dos = get_dos_imp(stmat, self.g0, multipilicity=multi)
         return dos
 
+    def get_dos_pure(self):
+        """Calculate DOS of the pure system
+        """
+        if self.flag_calc is not True:
+            dos = 0.0
+            return dos
+        primitive = self.ph_pure.get_primitive()
+        n2pp = _get_IDmap4newcell(primitive, self.nc_pure)
+        multi = conv_n2ss2weights(n2pp)
+        nat_prim = len(primitive.masses)
+        dos = get_dos_green(self.g0, multiplicity=multi)
+        return dos
+        
 def _initialize_pyscat():
     print("")
     print(" -----------------------------------------------------------------")

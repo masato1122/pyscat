@@ -4,7 +4,7 @@ from pyscat.tmat import Tmat
 from pyscat.crystal.crys import Grid
 from pyscat.crystal.vesta import mkvesta_IFCs
 from pyscat.latdynam.phonon import get_grid
-from pyscat.calc.dos import (get_dos_green, cal_dos_f2)
+from pyscat.calc.dos import cal_dos_f2
 
 import matplotlib
 matplotlib.use('Agg')
@@ -32,11 +32,9 @@ def draw(f0, d0, f1, d1, d2):
     plt.savefig(FNAME)
     print("Output:", FNAME)
 
-
 def main():
     
     mesh = [5,5,5]
-    
     ndiv_integral = 200
     
     #--- use Green class
@@ -65,26 +63,17 @@ def main():
     tmat.set_ifcs4newcells()
     #tmat.visualize_IFCs_diff()
     
-    Nfreq = 10
-    frequencies = np.linspace(0., 7., Nfreq)
+    Nfreq = 3
+    frequencies = np.linspace(2., 6., Nfreq)
     dos_G = np.zeros_like(frequencies)
     dos_T = np.zeros_like(frequencies)
-    #dos_tmat = np.zeros_like(frequencies)
-    #for i in range(int(Nfreq/2), int(Nfreq/2)+1):
     for i, freq in enumerate(frequencies):
         
         green.cal_green_function(frequency=freq)
         dos_G[i] = green.dos_green
         
         tmat.set_green_pure(frequency=freq, ndiv_integral=200)
-        if tmat.flag_calc:
-            dos_T[i] = get_dos_green(
-                    tmat.g0, len(tmat.ph_pure.get_primitive().masses))
-        else:
-            dos_T[i] = 0.0
-        
-        #tmat.set_Tmatrix()
-        #dos_tmat[i] = tmat.get_dos_tmat()
+        dos_T[i] = tmat.get_dos_pure() * 3*2
         print("{:10.4f} {:15.10f} {:15.10f}".format(freq, dos_G[i], dos_T[i]))
     
     #--- normal method
@@ -92,8 +81,9 @@ def main():
     weights = np.ones(len(green.grid.qs))
     dos_normal = cal_dos_f2(green.grid.thm, weights, f2s=freqs**2)
         
-    nat_prim = len(tmat.ph_pure.get_primitive().masses)
-    #dos_G /= float(3*nat_prim)
+    #nat_prim = len(tmat.ph_pure.get_primitive().masses)
+    
+    dos_T *= float(len(tmat.g0)/3)
     draw(freqs, dos_normal, frequencies, dos_G, dos_T)
 
 if __name__ == "__main__":

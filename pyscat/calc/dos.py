@@ -58,15 +58,22 @@ def cal_dos_f2(thm, weights, freqs=None, f2s=None):
     
     return dos
     
-def get_dos_green(g0, nat_prim):
+def get_dos_green(g0, multiplicity=None):
     """Calculate phonon DOS using Green's function at a given frequency
     Parameters
     ------------
     g0 : ndarray, complex, shape=((3*natoms, 3*natoms))
         Green's function of the pure crystal
-    nat_prim : integer
-        # of atoms in the primitive cell
+    #nat_prim : integer
+    #    # of atoms in the primitive cell
     """
-    return np.sum(np.diag(np.imag(g0))) * 3. * float(nat_prim) / np.pi
-    #===== (3*nat_prim) is to be check
+    if multiplicity is None:
+        multi_long = np.ones(len(g0))
+    else:
+        multi_long = np.zeros(len(g0))
+        for i in range(len(multiplicity)):
+            multi_long[3*i:3*(i+1)] = multiplicity[i] * np.ones(3)
+    dos = (np.sum(np.diag(np.imag(g0))/multi_long) / np.pi)
+    return dos
+
 

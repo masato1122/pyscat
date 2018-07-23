@@ -484,7 +484,7 @@ def conv_tmat_L2s(LTmat, masses):
         stmat[3*iat:3*(iat+1)] = LTmat[3*iat:3*(iat+1)] / mlong
     return stmat
 
-def get_dos_imp(stmat, g0, n2ss):
+def get_dos_imp(stmat, g0, multiplicity=None):
     """Calculator of DOS of structures with an impurity
     Parameters
     ----------
@@ -495,19 +495,16 @@ def get_dos_imp(stmat, g0, n2ss):
     n2ss : array, integer, shape=(natom,)
         atomic indices of supercell corresponding to the new cell
     """
-    nat = len(n2ss)
-    multi = conv_n2ss2weights(n2ss)
-    mul_long = np.zeros(3*nat)
-    for i in range(nat):
-        mul_long[3*i:3*(i+1)] = multi[i] * np.ones(3)
+    #if multiplicity is None:
+    #    multiplicity = np.ones(len(g0))
+    #nat = len(n2ss)
+    #mul_long = np.zeros(3*nat)
+    #for i in range(nat):
+    #    mul_long[3*i:3*(i+1)] = multiplicity[i] * np.ones(3)
     
     # -- calculate Green's function of impurity system
     g1 = np.dot(np.eye(len(stmat)) + np.dot(g0, stmat), g0)
-    
-    # ====== HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE =======================
-    dos_imp = np.imag(np.trace(g1)) / np.pi
-    #dos_imp = np.imag(np.trace(g1 / mul_long)) / np.pi
-    
+    dos_imp = get_dos_green(g1, multiplicity=multiplicity)
     return dos_imp
 
 def conv_n2ss2weights(n2ss):

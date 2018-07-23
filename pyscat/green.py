@@ -134,7 +134,6 @@ class Green():
              where natom is # of atoms in a supercell
          
         """
-        #self.set_frequencies(frequency=frequency, f2=f2)
         self.f2_target = get_frequency2(frequency=frequency, f2=f2)
         
         pc = self.phonon.get_primitive()
@@ -150,6 +149,6 @@ class Green():
                 s2pp,
                 ndiv_integral = self.ndiv)
         
-        self.dos_green = get_dos_green(self.g0, self.idat.nat_prim)
-    
+        self.dos_green = get_dos_green(self.g0) * 3*self.idat.nat_prim
+        
 
