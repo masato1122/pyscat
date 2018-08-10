@@ -5,12 +5,12 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import phonopy.units
+from pyscat.calc.dos import get_dos_green 
 
 AMU = 1.6605402e-27 # [kg]
 EV = 1.60217733e-19 # [J]
 Angstrom = 1.0e-10  # [m]
 VaspToTHz = np.sqrt(EV/AMU)/Angstrom/(2*np.pi)/1e12 # [THz] 15.633302
-
 
 def cal_green_function(
         f2_target, grid,

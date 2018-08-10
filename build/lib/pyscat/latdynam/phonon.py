@@ -3,7 +3,7 @@ import numpy as np
 from phonopy import Phonopy
 from phonopy.interface.vasp import read_vasp_from_strings, read_vasp
 from phonopy.file_IO import (parse_FORCE_SETS, parse_BORN)
-from phicatty.utils.idata import Idata
+from pyscat.utils.idata import Idata
 
 
 def get_grid(

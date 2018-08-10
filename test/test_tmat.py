@@ -100,13 +100,16 @@ def main():
         
         tmat.set_green_pure(frequency=freq, ndiv_integral=200)
         if tmat.flag_calc:
-            dos_green[i] = get_dos_green(tmat.g0, len(tmat.ph_pure.get_primitive().masses))
+            #dos_green[i] = get_dos_green(
+            #        tmat.g0, len(tmat.ph_pure.get_primitive().masses))
+            dos_green[i] = get_dos_green(tmat.g0)
         else:
             dos_green[i] = 0.0
         
         tmat.set_Tmatrix()
         dos_tmat[i] = tmat.get_dos_tmat()
-        print("{:10.4f} {:15.10f} {:15.10f}".format(freq, dos_green[i], dos_tmat[i]))
+        print("{:10.4f} {:15.10f} {:15.10f}".format(
+            freq, dos_green[i], dos_tmat[i]))
     
     draw(frequencies, dos_green, dos_tmat)
 

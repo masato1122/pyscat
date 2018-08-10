@@ -509,6 +509,9 @@ class Tmat(object):
         n2pp = _get_IDmap4newcell(primitive, self.nc_pure)
         multi = conv_n2ss2weights(n2pp)
         nat_prim = len(primitive.masses)
+
+        print(n2pp)
+        print(multi)
         dos = get_dos_green(self.g0, multiplicity=multi)
         return dos
         

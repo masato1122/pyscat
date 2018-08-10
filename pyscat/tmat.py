@@ -496,7 +496,7 @@ class Tmat(object):
         stmat = conv_tmat_L2s(self.tmat, self.nc_imp.masses)
         n2ss = _get_IDmap4newcell(self.ph_imp.get_primitive(), self.nc_imp)
         multi = conv_n2ss2weights(n2ss)
-        dos = get_dos_imp(stmat, self.g0, multipilicity=multi)
+        dos = get_dos_imp(stmat, self.g0, multiplicity=multi)
         return dos
 
     def get_dos_pure(self):
