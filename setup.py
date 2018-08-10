@@ -7,7 +7,7 @@ setup(name='pyscat',
       author_email='ohnishi@photon.t.u-tokyo.ac.jp',
       packages=['pyscat'],
       requires=['numpy', 'phonopy'],
-      #rul='https://github.com/masato1122/pyscat',
+      url='https://github.com/masato1122/pyscat',
       license='MIT',
       provides=['pyscat']
       )
