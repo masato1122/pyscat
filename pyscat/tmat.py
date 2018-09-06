@@ -294,6 +294,7 @@ class Tmat(object):
         else:
             IFCs_new = IFCs
         OFILE = "ifcs_diff_{:d}{:d}.vesta".format(idir1, idir2)
+        #
         mkvesta_IFCs( OFILE,
                       IFCs_view,
                       self.nc_pure.scaled_positions,
