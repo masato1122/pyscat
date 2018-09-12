@@ -16,7 +16,8 @@ def get_corresp_sites( prim ):
     """
     p2p_map = prim.get_primitive_to_primitive_map()
     s2p_map = prim.get_supercell_to_primitive_map()
-    return np.array([p2p_map[i] for i in s2p_map], dtype=int)
+    s2pp = np.array([p2p_map[i] for i in s2p_map], dtype=int)
+    return s2pp
 
 def offset_cell_position( cell, pos_sc, base_posi ):
     """Set atoms around an arbitrary position

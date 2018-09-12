@@ -495,13 +495,6 @@ def get_dos_imp(stmat, g0, multiplicity=None):
     n2ss : array, integer, shape=(natom,)
         atomic indices of supercell corresponding to the new cell
     """
-    #if multiplicity is None:
-    #    multiplicity = np.ones(len(g0))
-    #nat = len(n2ss)
-    #mul_long = np.zeros(3*nat)
-    #for i in range(nat):
-    #    mul_long[3*i:3*(i+1)] = multiplicity[i] * np.ones(3)
-    
     # -- calculate Green's function of impurity system
     g1 = np.dot(np.eye(len(stmat)) + np.dot(g0, stmat), g0)
     dos_imp = get_dos_green(g1, multiplicity=multiplicity)

@@ -1,6 +1,6 @@
 import numpy as np
 
-OUTFILE = "SCATTERING_RATE"
+OFILE_SCATTERING = "SCATTERING_RATE"
 
 #def initialize_output(
 #        natoms, nelements, cell,
@@ -45,7 +45,7 @@ OUTFILE = "SCATTERING_RATE"
 #    ofs.close()
 
 
-def initialize_scattering_file(mesh, nq, OFILE=OUTFILE):
+def initialize_scattering_file(mesh, nq, OFILE=OFILE_SCATTERING):
     """Make file of scattering rates
     Parameters
     ------------
@@ -71,7 +71,7 @@ def initialize_scattering_file(mesh, nq, OFILE=OUTFILE):
     ofs.write("#\n")
     ofs.close()
 
-def dump_scattering_rate(iq, qpoint, im, f2, rscat, OFILE=OUTFILE):
+def dump_scattering_rate(iq, qpoint, im, f2, rscat, OFILE=OFILE_SCATTERING):
     """Make file of scattering rates
     Parameters
     ------------
@@ -101,30 +101,34 @@ def dump_scattering_rate(iq, qpoint, im, f2, rscat, OFILE=OUTFILE):
         ofs.write("{:18.5e}\n".format(rscat))
     ofs.close()
 
-def output_scattering_rates(qs, f2s, rscat, OFILE=OUTFILE):
+def output_scattering_rates(qs, f2s, rscat, OFILE=OFILE_SCATTERING):
     """Make file of scattering rates
     Parameters
     ------------
-    qs : ndarray, float, shape=(nq, 3)
+    ns : integer
+        # of qpoints
+    qs : ndarray, float, shape=(ns, 3)
         q-points
-    f2s : ndarray, float, shape=(nq, nmodes)
+    f2s : ndarray, float, shape=(ns, nmodes)
         Squared frequencies
-    rscat : ndarray, float, shape=(nq, nmodes)
+    rscat : ndarray, float, shape=(ns, nmodes)
         Scattering rate
-    OFILE : straing
+    OFILE : string
         Output file name
     """
-    nq = len(qs)
+    ns = len(qs)
     nmodes = len(f2s[0])
     freqs = np.sqrt(abs(f2s)) * np.sign(f2s)
+    
     ofs = open(OFILE, "w")
     ofs.write("# ------------------------------------------\n")
     ofs.write("# Phonon scattering rate due to an impurity\n")
-    ofs.write("# calculated by phtmat\n")
+    ofs.write("# calculated by pyscat\n")
     ofs.write("# ------------------------------------------\n")
     ofs.write("#\n")
+
     for iq, qq in enumerate(qs):
-        ofs.write("# {:2d} qpoint : {:8.5f} {:8.5f} {:8.5f}\n".format(
+        ofs.write("# {:2d} qpoint : {:13.7f} {:13.7f} {:13.7f}\n".format(
             iq, qq[0], qq[1], qq[2]))
         for im, freq in enumerate(freqs[iq]):
             ofs.write("{:2d} {:13.3f} ".format(im, freq))
@@ -132,7 +136,8 @@ def output_scattering_rates(qs, f2s, rscat, OFILE=OUTFILE):
                 ofs.write("None\n")
             else:
                 ofs.write("{:18.5e}\n".format(rscat[iq,im]))
-        ofs.write("\n")
+        if iq != ns-1:
+            ofs.write("\n")
     ofs.close()
     print(" Output: ", OFILE)
 

@@ -294,7 +294,7 @@ class Tmat(object):
         else:
             IFCs_new = IFCs
         OFILE = "ifcs_diff_{:d}{:d}.vesta".format(idir1, idir2)
-        #
+        
         mkvesta_IFCs( OFILE,
                       IFCs_view,
                       self.nc_pure.scaled_positions,
@@ -365,7 +365,7 @@ class Tmat(object):
         weights : array, float, shape=(nq,)
             weights of each q-point
         f2s : ndarray, float, shape=(nq, nmodes)
-            frequencies
+            squared frequencies
         evecs : ndarray, complex, shape=(nq, 3*nsites, nmodes)
             eigenvectors
         dos_imp : ndarray, float, shape=(nq, nmodes)
@@ -396,10 +396,10 @@ class Tmat(object):
                         )
                 dump_scattering_rate(iq, qpoint, im, f2, rscat[iq,im])
         _end_of_simulation()
-        #output_scattering_rates(qs, f2s, rscat)
+        output_scattering_rates(qs, f2s, rscat)
         
         frequencies = np.sqrt(abs(f2s)) * np.sign(f2s)
-        return qs, frequencies, rscat, dos_tmat
+        return qs, frequencies, rscat, dos_imp
 
     def get_grid4summation(self):
         """Get phonon properteis on grid

@@ -70,6 +70,13 @@ def get_dos_green(g0, multiplicity=None):
     if multiplicity is None:
         multi_long = np.ones(len(g0))
     else:
+        if 3*len(multiplicity) != len(g0):
+            print("Error {:d} != {:d}".format(
+                    3*len(multiplicity),
+                    len(g0)))
+            import sys
+            sys.exit()
+        
         multi_long = np.zeros(len(g0))
         for i in range(len(multiplicity)):
             multi_long[3*i:3*(i+1)] = multiplicity[i] * np.ones(3)
