@@ -1,2 +1,2 @@
 # PyscaT
-Calculator of phonon scattering rate due to an impurity with T-matrix
+Calculator of phonon scattering rate due to an impurity with T-matrix theory
