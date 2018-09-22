@@ -38,8 +38,8 @@ def check_number_of_atoms(nat1, nat2, flag=True):
         return False
     
     if nat1 != nat2:
-        print("Error: number of atoms is different in the pure system and")
-        print("       in the system with impurities.")
+        print("Error: number of atoms is different in the pure system and "
+                "in the system with impurities.")
         import sys
         sys.exit()
     return True
@@ -56,15 +56,16 @@ def check_positions( pos1, pos2, cell=np.eye(3), flag=True, tolerance=1.0):
     if flag is not True:
         print(" Position check is OFF.")
         return False
-    
     diff = pos1 - pos2
     diff = np.dot(diff, cell)
     FLAG = 0
     for ia in range(len(diff)):
         for j in range(3):
             if abs(diff[ia,j]) > tolerance:
-                print("Error. Defference of an atomic position of the pure ")
-                print("       crystal is too large.")
+                print(" Error: difference of an atomic position of the pure "
+                        "crystal is too large.")
+                print(" {:d}-th atom has been moved {:f} A.".format(ia,
+                    diff[ia,j]))
                 import sys
                 sys.exit()
     if FLAG == 0:
