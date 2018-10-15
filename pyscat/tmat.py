@@ -135,7 +135,7 @@ class Tmat(object):
         self._flag_structure = None
         self.flag_calc = None
         
-        # ----------------------------------------------------
+        
         # new cell around an impurity in which the impurity
         # is located on the center.
         # ----------------------------------------------------
@@ -154,15 +154,15 @@ class Tmat(object):
                 is_eigenvectors=True) 
         
         # -- for the structure w/ an impurity
-        self.ph_imp = get_phonopy( self.idat_imp )
-          
+        self.ph_imp = get_phonopy(self.idat_imp)
+        
         self.idat_pure.set_natoms(self.ph_pure)
         self.idat_imp.set_natoms(self.ph_imp)
          
         
     def check_structures(
             self, natom=True, cell=True, position=True):
-        """ Check the structures.
+        """ Check structures.
         Note
         ------
         What is checked may be changed depending on what kind of impurities

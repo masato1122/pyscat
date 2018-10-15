@@ -1,5 +1,5 @@
 import numpy as np
-from phonopy import Phonopy
+#from phonopy import Phonopy
 
 from pyscat.green import Green
 from pyscat.calc.dos import cal_dos_f2

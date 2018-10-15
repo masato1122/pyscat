@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 nc_scell = [[1,0,0], [0,1,0], [0,0,1]]
 primat = [[0, 0.25, 0.25], [0.25, 0, 0.25], [0.25, 0.25, 0]]
 
-POS_PURE, FORCE_PURE = "../SPOSCAR_pure", "../FORCE_SETS_pure"
-POS_IMP,  FORCE_IMP  = "../SPOSCAR_imp", "../FORCE_SETS_imp"
+POS_PURE, FORCE_PURE = "../files/SPOSCAR_pure", "../files/FORCE_SETS_pure"
+POS_IMP,  FORCE_IMP  = "../files/SPOSCAR_imp",  "../files/FORCE_SETS_imp"
 
 def draw_rscat(freqs, rscat):
     nq = len(freqs)

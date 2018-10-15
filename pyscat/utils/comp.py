@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 
-def check_cells( cell1, cell2, flag=True, tolerance=1e-5):
+def check_cells(cell1, cell2, flag=True, tolerance=1e-5):
     """Check of cell size
     cell{1,2}: ndmap, float, shape=(3,3)
         cell vectors
@@ -44,7 +44,7 @@ def check_number_of_atoms(nat1, nat2, flag=True):
         sys.exit()
     return True
 
-def check_positions( pos1, pos2, cell=np.eye(3), flag=True, tolerance=1.0):
+def check_positions(pos1, pos2, cell=np.eye(3), flag=True, tolerance=1.0):
     """Check positions
     Parameters
     -----------
@@ -57,7 +57,14 @@ def check_positions( pos1, pos2, cell=np.eye(3), flag=True, tolerance=1.0):
         print(" Position check is OFF.")
         return False
     diff = pos1 - pos2
-    diff = np.dot(diff, cell)
+    
+    for ia in range(len(pos1)):
+        print(pos1[ia], pos2[ia])
+
+    exit()
+    diff = np.linalg.norm(np.dot(diff, cell), axis=1)
+    print(diff)
+    exit()
     FLAG = 0
     for ia in range(len(diff)):
         for j in range(3):
